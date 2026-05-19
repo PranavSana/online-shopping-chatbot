@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="page-container">
+    <h2 class="page-header">Request Return for Order #{{ order.user_order_number }}</h2>
+
+    <form method="POST" action="{{ url_for('return_order', order_id=order.id) }}">
+        <div class="form-group">
+            <label for="reason">Reason for Return:</label>
+            <select name="reason" id="reason" class="form-control" required>
+                <option value="">-- Select a Reason --</option>
+                <option value="incorrect_item">Received Incorrect Item</option>
+                <option value="damaged">Item was Damaged or Defective</option>
+                <option value="wrong_size">Wrong Size/Fit</option>
+                <option value="not_as_described">Not as Described</option>
+                <option value="no_longer_needed">No Longer Needed</option>
+                <option value="other">Other</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="details">Additional Details (optional):</label>
+            <textarea name="details" id="details" class="form-control" rows="4" placeholder="Please provide any additional information here..."></textarea>
+        </div>
+        <button type="submit" class="btn-place-order" style="margin-top: 10px;">Submit Return Request</button>
+    </form>
+</div>
+{% endblock %}

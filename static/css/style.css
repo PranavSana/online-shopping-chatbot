@@ -1,0 +1,798 @@
+/* static/css/style.css */
+
+/* --- Google Font Import --- */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/* --- CSS Variables for easy customization --- */
+:root {
+    --primary-color: #0a2540;
+    --secondary-color: #635bff;
+    --accent-color: #00d4ff;
+    --background-color: #f6f9fc;
+    --text-color: #333;
+    --card-background: #ffffff;
+    --border-color: #e6ebf1;
+    --success-color: #00b894;
+    --error-color: #ff7675;
+    --shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+    --border-radius: 8px;
+}
+
+/* --- Global Styles --- */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 20px;
+    font-size: 16px;
+}
+
+main {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+a {
+    color: var(--secondary-color);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: var(--primary-color);
+}
+
+/* --- Login & Register Page --- */
+.auth-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; 
+    
+    /* --- The Fix --- */
+
+    /* 1. Add a fallback background color that matches your image */
+    background-color: #6a0dad; /* A rich purple color */
+
+    /* 2. Your image is placed on top of this color */
+    background-image: url('../images/login_background.jpg');
+    
+    background-size: cover;          
+    background-position: center;     
+    background-repeat: no-repeat;    
+}
+
+
+.auth-box {
+    background: var(--card-background);
+    padding: 40px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.auth-box h2 {
+    margin-bottom: 25px;
+    color: var(--primary-color);
+}
+
+.auth-box .form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.auth-box input[type="text"],
+.auth-box input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+}
+
+.auth-box input[type="text"]:focus,
+.auth-box input[type="password"]:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+}
+
+.auth-box .btn {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--secondary-color);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+}
+
+.auth-box .btn:hover {
+    background-color: #5048e5; /* A slightly darker shade of secondary */
+}
+
+.auth-box .auth-switch {
+    margin-top: 20px;
+}
+
+.auth-box .error {
+    color: var(--error-color);
+    margin-bottom: 15px;
+}
+
+/* --- Header --- */
+.site-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 25px;
+    background-color: var(--card-background);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    margin-bottom: 30px;
+}
+
+.site-header h1 {
+    font-size: 1.5em;
+    margin: 0;
+    color: var(--primary-color);
+}
+
+.header-controls {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+/* Search Bar */
+.search-form {
+    position: relative;
+}
+
+.search-form input {
+    padding: 8px 40px 8px 15px;
+    border-radius: 20px;
+    /* I've changed the border to a more visible grey color */
+    border: 1px solid #c0c0c0; 
+    /* I've increased the width to make the search bar longer */
+    width: 350px; 
+    transition: all 0.3s ease;
+}
+.search-form input:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 3px rgba(99, 91, 255, 0.2);
+}
+
+.search-form .search-icon {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+}
+
+/* Header Buttons & Icons */
+.btn-header {
+    padding: 8px 16px;
+    border-radius: 20px;
+    border: 1px solid var(--border-color);
+    background-color: transparent;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-header:hover {
+    background-color: var(--secondary-color);
+    color: white;
+    border-color: var(--secondary-color);
+}
+
+.cart-link {
+    position: relative;
+    font-size: 1.5em;
+    color: var(--primary-color);
+}
+
+.cart-badge {
+    position: absolute;
+    top: -5px;
+    right: -10px;
+    background-color: var(--error-color); /* Uses the modern red from our theme */
+    color: white;
+    border-radius: 50%; /* Makes it a perfect circle */
+    font-size: 0.75em;  /* Adjusts font size */
+    font-weight: 600;
+    height: 20px;       /* Sets a fixed height */
+    width: 20px;        /* Sets a fixed width */
+    display: flex;      /* The next 3 lines center the number */
+    align-items: center;
+    justify-content: center;
+    line-height: 1;     /* Ensures proper vertical alignment */
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2); /* Adds a subtle shadow */
+}
+
+.profile-dropdown {
+    position: relative;
+}
+
+.profile-icon {
+    cursor: pointer;
+    font-size: 1.5em;
+    color: var(--primary-color);
+}
+
+.profile-menu {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 130%;
+    background: var(--card-background);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    padding: 10px;
+    z-index: 10;
+    width: 200px;
+}
+.profile-menu .username {
+    font-weight: 600;
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--border-color);
+    margin: -10px -10px 10px -10px;
+}
+.profile-menu a {
+    display: block;
+    padding: 8px 10px;
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
+}
+.profile-menu a:hover {
+    background-color: var(--background-color);
+}
+.profile-menu .logout-link {
+    color: var(--error-color);
+}
+
+/* --- Product List --- */
+.product-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 30px;
+}
+
+.product-card {
+    background: var(--card-background);
+    border-radius: var(--border-radius);
+    padding: 20px;
+    text-align: center;
+    box-shadow: var(--shadow);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+}
+
+.product-card img {
+    max-width: 80%;
+    height: 180px;
+    object-fit: contain;
+    margin: 0 auto 15px auto;
+    border-radius: 5px;
+}
+
+.product-card h3 {
+    font-size: 1.1em;
+    margin: 10px 0;
+}
+
+.product-card .product-desc {
+    font-size: 0.9em;
+    color: #666;
+    flex-grow: 1;
+}
+
+.product-card .product-price {
+    font-size: 1.2em;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin: 15px 0;
+}
+
+.size-dropdown {
+    margin: 10px 0;
+}
+
+.size-dropdown select {
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    width: 100%;
+}
+
+.btn-add-to-cart {
+    margin-top: auto;
+    padding: 10px;
+    background-color: var(--primary-color);
+    color: white;
+    font-size: 1em;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-add-to-cart:hover {
+    background-color: var(--secondary-color);
+}
+
+/* --- Chatbot --- */
+.chatbot-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    height: 550px;
+    background-color: var(--card-background);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    box-shadow: 0 13px 27px -5px rgba(50,50,93,.25), 0 8px 16px -8px rgba(0,0,0,.3);
+    display: none;
+    flex-direction: column;
+    z-index: 1000;
+    overflow: hidden;
+}
+
+.chatbot-header {
+    padding: 15px;
+    font-weight: 600;
+    background-color: var(--primary-color);
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chatbot-close-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5em;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.chatbot-messages {
+    flex-grow: 1;
+    padding: 15px;
+    overflow-y: auto;
+    font-size: 0.9em;
+}
+
+.chatbot-input-area {
+    display: flex;
+    padding: 15px;
+    border-top: 1px solid var(--border-color);
+}
+
+.chatbot-input-area input {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+}
+
+.chatbot-input-area button {
+    margin-left: 10px;
+    padding: 10px 15px;
+    border-radius: 6px;
+    border: none;
+    background-color: var(--secondary-color);
+    color: white;
+    cursor: pointer;
+}
+
+/* --- Notification --- */
+#notification-box {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 5px;
+    display: none;
+    z-index: 9999;
+    box-shadow: var(--shadow);
+    font-weight: 500;
+}
+
+/* --- Cart Page Specifics --- */
+.cart-container {
+    display: flex;
+    gap: 30px;
+    align-items: flex-start;
+}
+.cart-items {
+    flex: 2;
+    display: grid;
+    gap: 20px;
+}
+.cart-item-card {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background: var(--card-background);
+    padding: 20px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+}
+.cart-item-card img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 6px;
+}
+.cart-item-info {
+    flex-grow: 1;
+}
+.cart-item-info h3 { margin: 0 0 10px 0; }
+.cart-item-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+.cart-item-actions select {
+    padding: 5px;
+    border-radius: 4px;
+}
+.btn-remove {
+    background-color: var(--error-color);
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.order-summary {
+    flex: 1;
+    background: var(--card-background);
+    padding: 25px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    position: sticky;
+    top: 20px;
+}
+.order-summary h3 { text-align: center; margin-bottom: 25px; }
+.summary-line {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+.summary-total {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 600;
+    font-size: 1.2em;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 2px solid var(--border-color);
+}
+.btn-place-order {
+    width: 100%;
+    padding: 12px;
+    margin-top: 20px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1.1em;
+    cursor: pointer;
+}
+
+/* --- Order History & Payment Page --- */
+.page-container {
+    background: var(--card-background);
+    padding: 30px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+}
+.page-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+.order-card {
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 20px;
+    margin-bottom: 30px;
+}
+.order-details p { margin: 5px 0; }
+.order-items-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+.order-items-table th, .order-items-table td {
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    text-align: left;
+}
+.order-items-table thead {
+    background-color: var(--background-color);
+}
+.order-items-table img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    margin-right: 15px;
+    border-radius: 5px;
+}
+
+/* Payment form */
+.form-group {
+    margin-bottom: 20px;
+}
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+.form-control {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    box-sizing: border-box;
+}
+.payment-methods label {
+    margin-right: 15px;
+}
+#successModal .modal-content {
+    border-radius: var(--border-radius);
+    padding: 30px;
+}
+/* --- New Chatbot Message Styles --- */
+
+.chatbot-messages .message {
+  display: flex;
+  margin-bottom: 15px;
+  max-width: 85%;
+}
+
+.chatbot-messages .message .bubble {
+  padding: 10px 15px;
+  border-radius: 18px;
+  line-height: 1.5;
+}
+
+/* Styles for messages from the 'You' (user) */
+.chatbot-messages .user-message {
+  justify-content: flex-end; /* Aligns to the right */
+  margin-left: auto;
+}
+
+.chatbot-messages .user-message .bubble {
+  background-color: var(--secondary-color); /* Uses the modern purple from our theme */
+  color: white;
+  border-bottom-right-radius: 4px; /* Gives it a 'tail' */
+}
+
+/* Styles for messages from the 'Bot' (Shopping Assistant) */
+.chatbot-messages .bot-message {
+  justify-content: flex-start; /* Aligns to the left */
+}
+
+.chatbot-messages .bot-message .bubble {
+  background-color: #e5e5ea; /* A standard light grey for chat bubbles */
+  color: black;
+  border-bottom-left-radius: 4px; /* Gives it a 'tail' */
+}
+
+.chatbot-messages .bot-message .bubble strong {
+    color: var(--primary-color);
+}
+
+/* --- Assistant Button Highlight --- */
+#chatbotToggleBtn {
+    padding: 10px 22px; /* Makes the button bigger */
+    font-size: 1em;     /* Makes the text slightly bigger */
+    font-weight: 600;   /* Makes the font bolder */
+    background-color: var(--secondary-color); /* The modern purple color */
+    color: white;       /* White text */
+    border-color: var(--secondary-color); /* Matching border */
+}
+
+/* Add a hover effect for interactivity */
+#chatbotToggleBtn:hover {
+    background-color: #5048e5; /* A slightly darker shade of the purple */
+    border-color: #5048e5;
+}
+
+/* --- Footer Styles --- */
+.site-footer {
+    background-color: #0a2540; /* Dark blue, matching our theme */
+    color: #e6ebf1;
+    padding: 40px 20px;
+    margin-top: 50px; /* Adds space above the footer */
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    /* This is the change that centers the columns */
+    justify-content: center; 
+    flex-wrap: wrap; 
+    gap: 60px; /* Increased gap for better spacing */
+}
+
+/* Find the old .footer-column rule and replace it with this */
+.footer-column {
+    flex: 1;
+    min-width: 200px;
+    /* This is the new line that centers the text */
+    text-align: center;
+}
+
+.footer-column h4 {
+    color: white;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.footer-column ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-column ul li {
+    margin-bottom: 10px;
+}
+
+.footer-column ul a {
+    color: #e6ebf1;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-column ul a:hover {
+    color: var(--accent-color); /* The bright blue accent color */
+}
+
+.footer-bottom {
+    max-width: 1200px;
+    margin: 40px auto 0 auto;
+    padding-top: 20px;
+    border-top: 1px solid #3a4f6a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 1px; /* This is the line to change */
+}
+
+/* --- Admin Panel Styles --- */
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.admin-table th, .admin-table td {
+    border: 1px solid var(--border-color);
+    padding: 10px 12px;
+    text-align: left;
+}
+
+.admin-table thead {
+    background-color: var(--background-color);
+}
+
+.admin-table td form {
+    display: flex;
+    gap: 10px;
+}
+
+.admin-table td select {
+    padding: 5px;
+    flex-grow: 1;
+}
+
+.admin-table td button {
+    padding: 5px 10px;
+    border: none;
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-exchange {
+    padding: 8px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    color: white !important;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    background-color: var(--secondary-color);
+}
+
+.order-status-exchange-initiated {
+    color: var(--secondary-color); /* The modern purple color */
+    font-weight: bold;
+}
+
+.order-actions {
+    margin-top: 15px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.btn-cancel, .btn-return, .btn-exchange {
+    padding: 8px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    color: white !important;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.btn-cancel {
+    background-color: var(--error-color);
+    border: none;
+}
+
+.btn-return {
+    background-color: var(--primary-color);
+}
+
+.btn-exchange {
+    background-color: var(--secondary-color);
+}
+
+.order-status-placed {
+    color: #f39c12;
+    font-weight: bold;
+}
+
+.order-status-cancelled {
+    color: var(--error-color);
+    font-weight: bold;
+}
+
+.order-status-delivered {
+    color: var(--success-color);
+    font-weight: bold;
+}
+
+.order-status-shipped,
+.order-status-return-initiated,
+.order-status-exchange-initiated {
+    color: var(--secondary-color);
+    font-weight: bold;
+}
+
+.btn-admin-delete {
+    padding: 5px 10px;
+    border: none;
+    background-color: var(--error-color); /* The red color from our theme */
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+}

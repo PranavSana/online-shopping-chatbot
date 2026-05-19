@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="product-list">
+  {% for product in products %}
+    <div class="product-card">
+      <img src="{{ url_for('static', filename=product.image_url.replace('/static/', '')) }}" alt="{{ product.name }}" />
+      <h3>{{ product.name }}</h3>
+      <p class="product-desc">{{ product.description }}</p>
+      <p class="product-price">₹{{ '%.2f' % product.price }}</p>
+
+      {% if product.category in ['shirts', 'tshirts', 'pants', 'shoes'] %}
+        <div class="size-dropdown">
+          <select id="size-select-{{ product.id }}">
+            <option value="">Select Size</option>
+            {% if product.category in ['shirts', 'tshirts'] %}
+              <option value="S">S</option> <option value="M">M</option> <option value="L">L</option> <option value="XL">XL</option> <option value="XXL">XXL</option>
+            {% elif product.category == 'pants' %}
+              <option value="30">30</option> <option value="32">32</option> <option value="34">34</option> <option value="36">36</option> <option value="38">38</option>
+            {% elif product.category == 'shoes' %}
+              <option value="6">6</option> <option value="7">7</option> <option value="8">8</option> <option value="9">9</option> <option value="10">10</option> <option value="11">11</option>
+            {% endif %}
+          </select>
+        </div>
+      {% endif %}
+
+      <button class="btn-add-to-cart" onclick="addToCart({{ product.id }}, '{{ product.category }}')">Add to Cart</button>
+    </div>
+  {% endfor %}
+</div>
+
+<div id="notification-box"></div>
+
+{% endblock %}

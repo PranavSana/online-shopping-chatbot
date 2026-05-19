@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="page-container">
+    <h2 class="page-header">Managing Orders for {{ user.username }}</h2>
+    <p><a href="{{ url_for('admin_panel', password='secret') }}">&larr; Back to User List</a></p>
+
+    <table class="admin-table">
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Order Date</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th>Update Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+            <tr>
+                <td>{{ order.id }}</td>
+                <td>{{ order.order_date.strftime('%d %b %Y, %H:%M') }}</td>
+                <td>₹{{ '%.2f' % order.total_amount }}</td>
+                <td><span class="order-status-{{ order.status.lower().replace(' ', '-') }}">{{ order.status }}</span></td>
+                <td>
+                    <form action="{{ url_for('admin_update_status', order_id=order.id) }}" method="POST">
+                        <input type="hidden" name="admin_password" value="secret">
+                        <input type="hidden" name="user_id" value="{{ user.id }}">
+                        <select name="status">
+                            <option value="Placed" {% if order.status == 'Placed' %}selected{% endif %}>Placed</option>
+                            <option value="Shipped" {% if order.status == 'Shipped' %}selected{% endif %}>Shipped</option>
+                            <option value="Delivered" {% if order.status == 'Delivered' %}selected{% endif %}>Delivered</option>
+                            <option value="Cancelled" {% if order.status == 'Cancelled' %}selected{% endif %}>Cancelled</option>
+                            <option value="Return Initiated" {% if order.status == 'Return Initiated' %}selected{% endif %}>Return Initiated</option>
+                            <option value="Exchange Initiated" {% if order.status == 'Exchange Initiated' %}selected{% endif %}>Exchange Initiated</option>
+                        </select>
+                        <button type="submit">Update</button>
+                    </form>
+                </td>
+                <td>
+                    <form action="{{ url_for('admin_delete_order', order_id=order.id) }}" method="POST" onsubmit="return confirm('WARNING: This will permanently delete the order and its items. Are you sure?');">
+                        <input type="hidden" name="admin_password" value="secret">
+                        <input type="hidden" name="user_id" value="{{ user.id }}">
+                        <button type="submit" class="btn-admin-delete">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

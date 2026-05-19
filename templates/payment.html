@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="page-container" style="max-width: 700px; margin: 40px auto;">
+  <h2 class="page-header">Payment Details</h2>
+  <form method="POST" action="{{ url_for('payment') }}">
+    <div class="form-group">
+      <label for="address">Shipping Address:</label>
+      <textarea class="form-control" id="address" name="address" rows="3" required></textarea>
+    </div>
+
+    <div class="form-group">
+      <label>Choose Payment Method</label>
+      <div class="payment-methods" style="display: flex; gap: 20px; margin-top: 10px;">
+        <label><input type="radio" name="payment_method" value="card" id="cardRadio" required> Credit/Debit Card</label>
+        <label><input type="radio" name="payment_method" value="netbanking" id="netbankingRadio"> Net Banking</label>
+        <label><input type="radio" name="payment_method" value="cod" id="codRadio"> Cash on Delivery</label>
+      </div>
+    </div>
+
+    <div id="cardDetails" style="display: none; margin-top: 20px; border-top: 1px solid var(--border-color); padding-top: 20px;">
+      <div class="form-group">
+        <label>Card Number</label>
+        <input type="text" class="form-control" name="card_number" pattern="\d{16}" placeholder="16-digit card number">
+      </div>
+      <div class="form-group">
+        <label>CVV</label>
+        <input type="text" class="form-control" name="cvv" pattern="\d{3}" placeholder="3-digit CVV">
+      </div>
+      <div class="form-group">
+        <label>PIN</label>
+        <input type="password" class="form-control" name="pin" pattern="\d{4}" placeholder="4-digit PIN">
+      </div>
+    </div>
+
+    <div id="netbankingDetails" style="display: none; margin-top: 20px; border-top: 1px solid var(--border-color); padding-top: 20px;">
+      <div class="form-group">
+        <label>Net Banking Username</label>
+        <input type="text" class="form-control" name="nb_username" placeholder="Enter username">
+      </div>
+      <div class="form-group">
+        <label>Net Banking Password</label>
+        <input type="password" class="form-control" name="nb_password" placeholder="Enter password">
+      </div>
+    </div>
+
+    <button type="submit" class="btn-place-order" style="margin-top: 20px;">Place Order</button>
+  </form>
+</div>
+
+{% if request.args.get('success') == '1' %}
+<div id="successModal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; z-index: 1000;">
+  <div class="auth-box" style="text-align: center; max-width: 400px; width: 90%;">
+    <i class="fas fa-check-circle" style="color: var(--success-color); font-size: 4.5em; margin-bottom: 20px;"></i>
+    <h3 style="margin-bottom: 25px;">Order Placed Successfully!</h3>
+    <a href="{{ url_for('home') }}" class="btn" style="background-color: var(--success-color);">Back to Home</a>
+  </div>
+</div>
+{% endif %}
+
+<script>
+    const cardRadio = document.getElementById('cardRadio');
+    const netbankingRadio = document.getElementById('netbankingRadio');
+    const codRadio = document.getElementById('codRadio');
+
+    const cardDetails = document.getElementById('cardDetails');
+    const netbankingDetails = document.getElementById('netbankingDetails');
+
+    function toggleFields() {
+    // Get all the input fields within the collapsible sections
+    const cardInputs = document.querySelectorAll('#cardDetails input');
+    const netbankingInputs = document.querySelectorAll('#netbankingDetails input');
+
+    if (cardRadio.checked) {
+        // If card is checked, show card details and enable its inputs
+        cardDetails.style.display = 'block';
+        cardInputs.forEach(input => input.disabled = false);
+        
+        // Hide netbanking details and disable its inputs
+        netbankingDetails.style.display = 'none';
+        netbankingInputs.forEach(input => input.disabled = true);
+
+    } else if (netbankingRadio.checked) {
+        // If netbanking is checked, show its details and enable its inputs
+        netbankingDetails.style.display = 'block';
+        netbankingInputs.forEach(input => input.disabled = false);
+
+        // Hide card details and disable its inputs
+        cardDetails.style.display = 'none';
+        cardInputs.forEach(input => input.disabled = true);
+
+    } else {
+        // If neither is checked (e.g., Cash on Delivery), hide and disable all
+        cardDetails.style.display = 'none';
+        cardInputs.forEach(input => input.disabled = true);
+        
+        netbankingDetails.style.display = 'none';
+        netbankingInputs.forEach(input => input.disabled = true);
+    }
+}
+
+    cardRadio.addEventListener('change', toggleFields);
+    netbankingRadio.addEventListener('change', toggleFields);
+    codRadio.addEventListener('change', toggleFields);
+</script>
+{% endblock %}

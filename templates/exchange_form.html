@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="page-container">
+    <h2 class="page-header">Request Exchange for Order #{{ order.user_order_number }}</h2>
+
+    <form method="POST" action="{{ url_for('exchange_order', order_id=order.id) }}">
+        <div class="form-group">
+            <label for="reason">Reason for Exchange:</label>
+            <select name="reason" id="reason" class="form-control" required>
+                <option value="">-- Select a Reason --</option>
+                <option value="wrong_size">Wrong Size/Fit</option>
+                <option value="damaged">Item was Damaged or Defective</option>
+                <option value="incorrect_item">Received Incorrect Item</option>
+                <option value="other">Other</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="details">What would you like to exchange for? (e.g., different size, color, or item)</label>
+            <textarea name="details" id="details" class="form-control" rows="4" placeholder="Please provide details here..."></textarea>
+        </div>
+        <button type="submit" class="btn-place-order" style="margin-top: 10px;">Submit Exchange Request</button>
+    </form>
+</div>
+{% endblock %}

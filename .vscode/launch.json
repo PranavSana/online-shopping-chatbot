@@ -1,0 +1,24 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Python: Flask",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/app.py",
+      "env": {
+        "FLASK_APP": "app.py",
+        "FLASK_ENV": "development"
+      },
+      "jinja": true,
+      "debugOptions": [
+        "RedirectOutput"
+      ],
+      "serverReadyAction": {
+        "action": "openExternally",
+        "pattern": "\\b(127\\.0\\.0\\.1:\\d+)\\b",
+        "uriFormat": "http://{env:FLASK_RUN_HOST}:{env:FLASK_RUN_PORT}"
+      }
+    }
+  ]
+}

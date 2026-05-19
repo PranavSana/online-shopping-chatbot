@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% block title %}ShopSphere{% endblock %}</title>
+    
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon.png') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="{% if request.endpoint in ['login', 'register'] %}auth-page{% endif %}">
+
+{% if 'username' in session %}
+<header class="site-header">
+    <a href="{{ url_for('home') }}">
+        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Shopsphere Logo" style="height: 55px;">
+    </a>
+    <div class="header-controls">
+        <form method="GET" action="{{ url_for('home') }}" class="search-form">
+            <input type="text" name="q" id="searchInput" placeholder="Search products..." value="{{ request.args.get('q', '') }}" autocomplete="off" />
+            <i class="fas fa-search search-icon"></i>
+        </form>
+        <button id="chatbotToggleBtn" class="btn-header">Assistant</button>
+        <a class="cart-link" href="{{ url_for('view_cart') }}" title="Cart">
+            <i class="fas fa-shopping-cart"></i>
+            {% if cart_count > 0 %}
+            <span class="cart-badge">{{ cart_count }}</span>
+            {% endif %}
+        </a>
+        <div class="profile-dropdown">
+            <i class="fas fa-user-circle profile-icon" onclick="toggleProfileMenu()"></i>
+            <div class="profile-menu" id="profileMenu">
+                <p class="username">{{ username }}</p>
+                <a href="{{ url_for('order_history') }}"><i class="fas fa-history"></i> Order History</a>
+                <a href="{{ url_for('logout') }}" class="logout-link"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+        </div>
+    </div>
+</header>
+{% endif %}
+
+<main>
+    {% block content %}{% endblock %}
+</main>
+
+{% if 'username' in session %}
+<div id="chatbotContainer" class="chatbot-container">
+    <div class="chatbot-header">
+        <span>Shopping Assistant</span>
+        <button id="chatbotCloseBtn" class="chatbot-close-btn">&times;</button>
+    </div>
+    <div class="chatbot-messages" id="chatbox">
+        <div class="message bot-message">
+            <div class="bubble">
+                <strong>Shopping Assistant:</strong><br>
+                Hi there! How can I help you today?
+            </div>
+        </div>
+    </div>
+    <div class="chatbot-input-area">
+        <input type="text" id="userInput" placeholder="Type a message..." />
+        <button onclick="sendMessage()">Send</button>
+    </div>
+</div>
+{% endif %}
+
+<footer class="site-footer">
+    <div class="footer-container">
+        <div class="footer-column">
+            <h4>Get to Know Us</h4>
+            <ul>
+                <li><a href="{{ url_for('show_page', page_name='about') }}">About Us</a></li>
+                <li><a href="{{ url_for('show_page', page_name='careers') }}">Careers</a></li>
+                <li><a href="{{ url_for('show_page', page_name='press') }}">Press Releases</a></li>
+            </ul>
+        </div>
+        <div class="footer-column">
+            <h4>Let Us Help You</h4>
+            <ul>
+                <li><a href="{{ url_for('order_history') }}">Order History</a></li>
+                <li><a href="{{ url_for('show_page', page_name='returns') }}">Returns Centre</a></li>
+                <li><a href="{{ url_for('show_page', page_name='protection') }}">100% Purchase Protection</a></li>
+                <li><a href="{{ url_for('show_page', page_name='help') }}">Help</a></li>
+            </ul>
+        </div>
+        <div class="footer-column">
+            <h4>Policies</h4>
+            <ul>
+                <li><a href="{{ url_for('show_page', page_name='privacy') }}">Privacy Policy</a></li>
+                <li><a href="{{ url_for('show_page', page_name='return_policy') }}">Return Policy</a></li>
+                <li><a href="{{ url_for('show_page', page_name='shipping') }}">Shipping Policy</a></li>
+                <li><a href="{{ url_for('show_page', page_name='terms') }}">Terms of Service</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <div class="footer-logo">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Shopsphere Logo" style="height: 45px;">
+        </div>
+        <p>&copy; 2025 Shopsphere. All Rights Reserved.</p>
+    </div>
+</footer>
+
+<script src="{{ url_for('static', filename='js/chatbot.js') }}"></script>
+<script>
+    function toggleProfileMenu() {
+        const menu = document.getElementById("profileMenu");
+        if (menu) {
+            menu.style.display = menu.style.display === "block" ? "none" : "block";
+        }
+    }
+    window.onclick = function (e) {
+        if (!e.target.matches('.profile-icon')) {
+            const menu = document.getElementById("profileMenu");
+            if (menu && menu.style.display === "block") {
+                menu.style.display = "none";
+            }
+        }
+    };
+
+    const chatbotToggleBtn = document.getElementById('chatbotToggleBtn');
+    const chatbotContainer = document.getElementById('chatbotContainer');
+    const chatbotCloseBtn = document.getElementById('chatbotCloseBtn');
+    if(chatbotToggleBtn) {
+        chatbotToggleBtn.addEventListener('click', () => { 
+            if(chatbotContainer) chatbotContainer.style.display = 'flex'; 
+        });
+    }
+    if(chatbotCloseBtn) {
+        chatbotCloseBtn.addEventListener('click', () => { 
+            if(chatbotContainer) chatbotContainer.style.display = 'none'; 
+        });
+    }
+
+    function showNotification(message, isError = false) {
+        const box = document.getElementById('notification-box');
+        if (box) {
+            box.textContent = message;
+            box.style.backgroundColor = isError ? 'var(--error-color)' : 'var(--success-color)';
+            box.style.display = 'block';
+            setTimeout(() => { box.style.display = 'none'; }, 2000);
+        }
+    }
+
+    // ✅ Updated addToCart function
+    function addToCart(productId, category, fromChatbot = false, sizeParam = null) {
+        let size = sizeParam;
+
+        if (['shirts', 'tshirts', 'pants', 'shoes'].includes(category)) {
+            if (!size) {
+                let sizeSelect = document.getElementById(`size-select-${productId}`);
+                if (!sizeSelect) {
+                    sizeSelect = document.getElementById(`chatbot-size-select-${productId}`);
+                }
+
+                if (!sizeSelect || sizeSelect.value === '') {
+                    showNotification("Please choose a size.", true);
+                    return;
+                }
+                size = sizeSelect.value;
+            }
+        }
+
+        fetch("/add_to_cart", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ product_id: productId, size: size }),
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.error) {
+                showNotification(data.error, true);
+                return;
+            }
+            showNotification("Item added to cart!");
+            const cartBadge = document.querySelector('.cart-badge');
+            const cartLink = document.querySelector('.cart-link');
+            if (data.cart_count > 0) {
+                if (cartBadge) {
+                    cartBadge.textContent = data.cart_count;
+                    cartBadge.style.display = 'flex';
+                } else {
+                    const newBadge = document.createElement('span');
+                    newBadge.className = 'cart-badge';
+                    newBadge.textContent = data.cart_count;
+                    cartLink.appendChild(newBadge);
+                }
+            } else {
+                if (cartBadge) {
+                    cartBadge.style.display = 'none';
+                }
+            }
+        })
+        .catch(() => showNotification("Failed to add item.", true));
+    }
+</script>
+</body>
+</html>

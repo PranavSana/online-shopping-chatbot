@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block content %}
+<header class="site-header">
+  <h1>Your Shopping Cart</h1>
+  <a href="{{ url_for('home') }}">← Back to Shopping</a>
+</header>
+
+{% if not cart_items %}
+  <p style="text-align:center; font-size: 1.2em; margin-top: 50px;">Your cart is empty.</p>
+{% else %}
+<div class="cart-container">
+  <div class="cart-items">
+    {% for item in cart_items %}
+      <div class="cart-item-card">
+        <img src="{{ item['image_url'] }}" alt="{{ item['name'] }}">
+        <div class="cart-item-info">
+          <h3>{{ item['name'] }}</h3>
+          {% if item['size'] %}<p><strong>Size:</strong> {{ item['size'] }}</p>{% endif %}
+          <p><strong>Price:</strong> ₹{{ '%.2f' % item['price'] }}</p>
+          <p><strong>Subtotal:</strong> ₹{{ '%.2f' % (item['price'] * item['quantity']) }}</p>
+        </div>
+        <div class="cart-item-actions">
+            <form action="{{ url_for('update_quantity') }}" method="POST">
+                <label for="quantity-{{ item['id'] }}-{{ item['size'] }}">Qty:</label>
+                <select name="quantity" id="quantity-{{ item['id'] }}-{{ item['size'] }}" onchange="this.form.submit()">
+                    {% for i in range(1, 11) %}
+                    <option value="{{ i }}" {% if i == item['quantity'] %}selected{% endif %}>{{ i }}</option>
+                    {% endfor %}
+                </select>
+                <input type="hidden" name="product_id" value="{{ item['id'] }}">
+                <input type="hidden" name="size" value="{{ item['size'] or '' }}">
+            </form>
+            <form action="{{ url_for('remove_from_cart') }}" method="POST">
+                <input type="hidden" name="product_id" value="{{ item['id'] }}">
+                <input type="hidden" name="size" value="{{ item['size'] or '' }}">
+                <button type="submit" class="btn-remove">Remove</button>
+            </form>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+  <div class="order-summary">
+    <h3>🧾 Order Summary</h3>
+    <div class="summary-line">
+      <span>Total MRP ({{ cart_items|length }} items)</span>
+      <span>₹{{ '%.2f' % total_amount }}</span>
+    </div>
+    <div class="summary-line">
+      <span>Platform Fee</span>
+      <span>₹20.00</span>
+    </div>
+    <div class="summary-line">
+      <span>Shipping Fee</span>
+      <span>₹100.00</span>
+    </div>
+    <div class="summary-total">
+      <span>Total Payable</span>
+      <span>₹{{ '%.2f' % (total_amount + 120) }}</span>
+    </div>
+    <form action="{{ url_for('payment') }}" method="GET">
+      <button type="submit" class="btn-place-order">Place Order</button>
+    </form>
+  </div>
+</div>
+{% endif %}
+{% endblock %}

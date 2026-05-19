@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="page-container">
+  <h2 class="page-header">🧾 Your Order History</h2>
+
+  {% if order_data %}
+    {% for data in order_data %}
+      <div class="order-card" style="border: 1px solid #ccc; border-radius: 8px; padding: 20px; margin-bottom: 30px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+        <div class="order-details">
+            <h4>Order #{{ data.order.user_order_number }}</h4>
+            <p><strong>Date:</strong> {{ data.order.order_date.strftime('%d %B %Y, %H:%M') if data.order.order_date else 'N/A' }}</p>
+            <p><strong>Status:</strong> <span class="order-status-{{ data.order.status.lower().replace(' ', '-') }}">{{ data.order.status }}</span></p>
+            <p><strong>Shipping Address:</strong> {{ data.order.shipping_address or 'N/A' }}</p>
+        </div>
+
+        <table class="order-items-table" style="width: 100%; border-collapse: collapse; margin-top: 15px;">
+          <thead>
+            <tr>
+              <th style="padding: 10px; border: 1px solid #ccc; background-color: #f2f2f2;">Product</th>
+              <th style="padding: 10px; border: 1px solid #ccc; background-color: #f2f2f2;">Size</th>
+              <th style="padding: 10px; border: 1px solid #ccc; background-color: #f2f2f2;">Quantity</th>
+              <th style="padding: 10px; border: 1px solid #ccc; background-color: #f2f2f2;">Price</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in data['items'] %}
+            <tr>
+              <td style="padding: 10px; border: 1px solid #ccc;">
+                <div style="display: flex; align-items: center;">
+                  {% if item.image_url %}
+                    <img src="{{ item.image_url }}" alt="{{ item.name }}" style="width: 60px; height: 60px; object-fit: cover; margin-right: 15px; border-radius: 5px;">
+                  {% endif %}
+                  <span>{{ item.name }}</span>
+                </div>
+              </td>
+              <td style="padding: 10px; border: 1px solid #ccc;">{{ item.size or '-' }}</td>
+              <td style="padding: 10px; border: 1px solid #ccc;">{{ item.quantity }}</td>
+              <td style="padding: 10px; border: 1px solid #ccc;">₹{{ '%.2f' % item.price }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        
+        <div class="order-actions">
+            {% if data.can_cancel %}
+            <form action="{{ url_for('cancel_order', order_id=data.order.id) }}" method="POST" onsubmit="return confirm('Are you sure you want to cancel this order?');">
+                <button type="submit" class="btn-cancel">Cancel Order</button>
+            </form>
+            {% endif %}
+
+            {% if data.can_return %}
+            <a href="{{ url_for('return_order', order_id=data.order.id) }}" class="btn-return">Request Return</a>
+            <a href="{{ url_for('exchange_order', order_id=data.order.id) }}" class="btn-exchange">Request Exchange</a>
+            {% endif %}
+        </div>
+      </div>
+    {% endfor %}
+  {% else %}
+    <p style="text-align:center;">You have no past orders.</p>
+  {% endif %}
+</div>
+
+{% endblock %}
