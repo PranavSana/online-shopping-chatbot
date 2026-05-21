@@ -1,0 +1,204 @@
+{% extends 'base.html' %}
+
+{% block title %}Wishlist - Shopsphere{% endblock %}
+
+{% block content %}
+<div class="wishlist-container">
+    <div class="container">
+        <h2 class="section-title">❤️ My Wishlist</h2>
+        
+        {% if wishlist_items %}
+            <div class="products-grid">
+                {% for product in wishlist_items %}
+                    <div class="product-card">
+                        <div class="product-image-wrapper">
+                            <img src="{{ product.image_url }}" alt="{{ product.name }}" class="product-image">
+                            <span class="product-category">{{ product.category }}</span>
+                        </div>
+                        
+                        <div class="product-details">
+                            <h3><a href="{{ url_for('product_detail', product_id=product.id) }}">{{ product.name }}</a></h3>
+                            <p class="product-description">{{ product.description[:100] }}...</p>
+                            
+                            <div class="product-footer">
+                                <div class="price-section">
+                                    <span class="price">₹{{ product.price }}</span>
+                                </div>
+                                
+                                <div class="actions">
+                                    <form action="{{ url_for('add_to_cart') }}" method="POST" style="display: inline;">
+                                        <input type="hidden" name="product_id" value="{{ product.id }}">
+                                        <input type="hidden" name="size" value="M">
+                                        <input type="hidden" name="quantity" value="1">
+                                        <button type="submit" class="btn btn-small btn-primary">🛒 Add</button>
+                                    </form>
+                                    
+                                    <form action="{{ url_for('remove_from_wishlist', product_id=product.id) }}" method="POST" style="display: inline;">
+                                        <button type="submit" class="btn btn-small btn-danger">Remove</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <div class="empty-icon">❤️</div>
+                <h3>Your Wishlist is Empty</h3>
+                <p>Start adding your favorite items to your wishlist!</p>
+                <a href="{{ url_for('home') }}" class="btn btn-primary">Continue Shopping</a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<style>
+.wishlist-container {
+    padding: 40px 0;
+    background: #f9f9f9;
+    min-height: 500px;
+}
+
+.section-title {
+    text-align: center;
+    margin-bottom: 40px;
+    font-size: 32px;
+    color: #333;
+}
+
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 25px;
+}
+
+.product-card {
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: all 0.3s;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+}
+
+.product-image-wrapper {
+    position: relative;
+    overflow: hidden;
+    height: 250px;
+    background: #f0f0f0;
+}
+
+.product-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s;
+}
+
+.product-card:hover .product-image {
+    transform: scale(1.05);
+}
+
+.product-category {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #007bff;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.product-details {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.product-details h3 {
+    margin: 0 0 10px;
+    font-size: 18px;
+}
+
+.product-details h3 a {
+    color: #333;
+    text-decoration: none;
+}
+
+.product-details h3 a:hover {
+    color: #007bff;
+}
+
+.product-description {
+    font-size: 14px;
+    color: #666;
+    margin: 0 0 15px;
+}
+
+.product-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+}
+
+.price {
+    font-size: 20px;
+    color: #e74c3c;
+    font-weight: bold;
+}
+
+.actions {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-small {
+    padding: 8px 12px;
+    font-size: 12px;
+}
+
+.btn-danger {
+    background: #dc3545;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background 0.3s;
+}
+
+.btn-danger:hover {
+    background: #c82333;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 80px 20px;
+    background: white;
+    border-radius: 8px;
+}
+
+.empty-icon {
+    font-size: 60px;
+    margin-bottom: 20px;
+}
+
+.empty-state h3 {
+    margin: 20px 0 10px;
+    color: #333;
+    font-size: 24px;
+}
+
+.empty-state p {
+    color: #666;
+    margin-bottom: 30px;
+}
+</style>
+{% endblock %}

@@ -1,0 +1,167 @@
+{% extends 'base.html' %}
+
+{% block title %}Profile - Shopsphere{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+    <div class="container">
+        <h2 class="section-title">My Profile</h2>
+        
+        <div class="profile-grid">
+            <!-- Profile Info Section -->
+            <div class="profile-section">
+                <h3>Account Information</h3>
+                <div class="profile-info">
+                    <p><strong>Username:</strong> {{ user.username }}</p>
+                    <p><strong>Email:</strong> {{ user.email or 'Not provided' }}</p>
+                    <p><strong>Phone:</strong> {{ user.phone or 'Not provided' }}</p>
+                    <p><strong>Member Since:</strong> {{ user.created_at.strftime('%B %d, %Y') if user.created_at else 'N/A' }}</p>
+                </div>
+            </div>
+
+            <!-- Edit Profile Section -->
+            <div class="profile-section">
+                <h3>Edit Profile</h3>
+                <form method="POST" action="{{ url_for('update_profile') }}" class="profile-form">
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" value="{{ user.email or '' }}" placeholder="your@email.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Phone</label>
+                        <input type="tel" id="phone" name="phone" value="{{ user.phone or '' }}" placeholder="10-digit phone number">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="address">Address</label>
+                        <textarea id="address" name="address" rows="3" placeholder="Street address">{{ user.address or '' }}</textarea>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="city">City</label>
+                            <input type="text" id="city" name="city" value="{{ user.city or '' }}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="state">State</label>
+                            <input type="text" id="state" name="state" value="{{ user.state or '' }}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="zip_code">ZIP Code</label>
+                            <input type="text" id="zip_code" name="zip_code" value="{{ user.zip_code or '' }}">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </form>
+            </div>
+
+            <!-- Quick Links Section -->
+            <div class="profile-section">
+                <h3>Quick Links</h3>
+                <div class="quick-links">
+                    <a href="{{ url_for('order_history') }}" class="link-btn">📦 Order History</a>
+                    <a href="{{ url_for('view_wishlist') }}" class="link-btn">❤️ Wishlist</a>
+                    <a href="{{ url_for('view_cart') }}" class="link-btn">🛒 Shopping Cart</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.profile-container {
+    background: #f9f9f9;
+    padding: 40px 0;
+    min-height: 600px;
+}
+
+.profile-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 30px;
+}
+
+.profile-section {
+    background: white;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.profile-section h3 {
+    margin-top: 0;
+    color: #333;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 15px;
+}
+
+.profile-info p {
+    margin: 12px 0;
+    color: #555;
+}
+
+.profile-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: #333;
+}
+
+.form-group input,
+.form-group textarea {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-family: inherit;
+}
+
+.quick-links {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.link-btn {
+    display: block;
+    padding: 12px 15px;
+    background: #f0f0f0;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: all 0.3s;
+    text-align: center;
+    color: #333;
+}
+
+.link-btn:hover {
+    background: #007bff;
+    color: white;
+    transform: translateX(5px);
+}
+
+@media (max-width: 768px) {
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+{% endblock %}
